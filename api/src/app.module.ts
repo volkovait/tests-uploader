@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { BullModule } from '@nestjs/bullmq';
+import { buildBullRedisConnection } from './config/bull-redis.config';
 import { ExercisesModule } from './exercises/exercises.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { TestsModule } from './tests/tests.module';
-
 
 const e2eMinimal = process.env.E2E_MINIMAL === '1';
 
@@ -17,9 +17,7 @@ const e2eMinimal = process.env.E2E_MINIMAL === '1';
           BullModule.forRootAsync({
             imports: [ConfigModule],
             useFactory: (config: ConfigService) => ({
-              connection: {
-                host: config.get<string>('https://desired-foal-99079.upstash.io'),
-              },
+              connection: buildBullRedisConnection(config),
             }),
             inject: [ConfigService],
           }),
