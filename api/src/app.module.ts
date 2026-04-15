@@ -16,8 +16,10 @@ const e2eMinimal = process.env.E2E_MINIMAL === '1';
       : [
           BullModule.forRootAsync({
             imports: [ConfigModule],
-            useFactory: (config: ConfigService) => ({
-              connection: buildBullRedisConnection(config),
+            useFactory: () => ({
+              connection: {
+                url: 'redis-cli --tls -u redis://default:gQAAAAAAAYMHAAIncDJlOGM1ODE1YzY0MmE0Yzg0ODAyMmQxZjZkOTRiY2NmOXAyOTkwNzk@desired-foal-99079.upstash.io:6379',
+              },
             }),
             inject: [ConfigService],
           }),
