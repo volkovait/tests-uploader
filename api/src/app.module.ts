@@ -18,7 +18,7 @@ const e2eMinimal = process.env.E2E_MINIMAL === '1';
             imports: [ConfigModule],
             useFactory: () => ({
               connection: {
-                url: 'redis-cli --tls -u redis://default:gQAAAAAAAYMHAAIncDJlOGM1ODE1YzY0MmE0Yzg0ODAyMmQxZjZkOTRiY2NmOXAyOTkwNzk@desired-foal-99079.upstash.io:6379',
+                url: 'redis://default:gQAAAAAAAYMHAAIncDJlOGM1ODE1YzY0MmE0Yzg0ODAyMmQxZjZkOTRiY2NmOXAyOTkwNzk@desired-foal-99079.upstash.io:6379',
               },
             }),
             inject: [ConfigService],
