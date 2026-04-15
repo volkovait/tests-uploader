@@ -1,3 +1,4 @@
+import '@nestjs/core';
 import { createExpressAppInstance } from './app.bootstrap';
 
 async function bootstrap(): Promise<void> {
