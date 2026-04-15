@@ -1,0 +1,15 @@
+{
+  "name": "english-exercises-proto",
+  "private": true,
+  "workspaces": [
+    "api",
+    "web"
+  ],
+  "scripts": {
+    "dev:back": "npm run start:dev --workspace=api",
+    "dev:front": "npm run dev --workspace=web"
+  },
+  "dependencies": {
+    "@nestjs/platform-express": "^11.1.19"
+  }
+}
