@@ -5,6 +5,7 @@ import { ExercisesModule } from './exercises/exercises.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { TestsModule } from './tests/tests.module';
 
+
 const e2eMinimal = process.env.E2E_MINIMAL === '1';
 
 @Module({
@@ -17,8 +18,7 @@ const e2eMinimal = process.env.E2E_MINIMAL === '1';
             imports: [ConfigModule],
             useFactory: (config: ConfigService) => ({
               connection: {
-                host: config.get<string>('REDIS_HOST', '127.0.0.1'),
-                port: Number(config.get<string>('REDIS_PORT', '6379')),
+                host: config.get<string>('https://desired-foal-99079.upstash.io'),
               },
             }),
             inject: [ConfigService],
