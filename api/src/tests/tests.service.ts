@@ -4,9 +4,6 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { InjectQueue } from '@nestjs/bullmq';
-import { Queue } from 'bullmq';
 import { Prisma, TestStatus } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import type {
@@ -56,14 +53,7 @@ export class TestsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly storage: TestStorageService,
-    private readonly config: ConfigService,
-    @InjectQueue('parse-test') private readonly parseQueue: Queue,
   ) {}
-
-  private useSyncParse(): boolean {
-    const v = this.config.get<string>('SYNC_PARSE');
-    return v === '1' || v === 'true' || v === 'yes';
-  }
 
   async listPublished(): Promise<
     Array<{ id: string; title: string; questionCount: number }>
@@ -170,11 +160,7 @@ export class TestsService {
       },
     });
 
-    if (this.useSyncParse()) {
-      await this.runParseJob(test.id);
-    } else {
-      await this.parseQueue.add('parse', { testId: test.id });
-    }
+    await this.runParseJob(test.id);
 
     const updated = await this.prisma.test.findUniqueOrThrow({
       where: { id: test.id },
