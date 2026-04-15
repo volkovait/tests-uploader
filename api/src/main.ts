@@ -1,15 +1,17 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+import { createExpressAppInstance } from './app.bootstrap';
 
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  const webOrigin = process.env.WEB_ORIGIN ?? 'http://localhost:3000';
-  app.enableCors({
-    origin: webOrigin,
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'X-Upload-Secret'],
-  });
+async function bootstrap(): Promise<void> {
+  const expressApp = await createExpressAppInstance();
   const port = Number(process.env.PORT ?? 3001);
-  await app.listen(port);
+  await new Promise<void>((resolve, reject) => {
+    const server = expressApp.listen(port, () => {
+      resolve();
+    });
+    server.on('error', reject);
+  });
 }
-bootstrap();
+
+bootstrap().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
