@@ -4,15 +4,11 @@ import { NestFactory } from '@nestjs/core';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import type { Express } from 'express';
 import express from 'express';
+import { buildCorsOptions } from './cors-options';
 import { AppModule } from './app.module';
 
 function applyCors(app: INestApplication): void {
-  const webOrigin = process.env.WEB_ORIGIN ?? 'http://localhost:3000';
-  app.enableCors({
-    origin: webOrigin,
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'X-Upload-Secret'],
-  });
+  app.enableCors(buildCorsOptions());
 }
 
 /**
